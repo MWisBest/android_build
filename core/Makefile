@@ -842,7 +842,6 @@ $(recovery_ramdisk): $(MKBOOTFS) $(MINIGZIP) \
 		$(recovery_fstab) \
 		$(RECOVERY_INSTALL_OTA_KEYS)
 	@echo ----- Making recovery image ------
-	$(hide) rm -rf $(TARGET_RECOVERY_OUT)
 	$(hide) mkdir -p $(TARGET_RECOVERY_OUT)
 	$(hide) mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/etc $(TARGET_RECOVERY_ROOT_OUT)/tmp
 	@echo Copying baseline ramdisk...
