@@ -102,4 +102,13 @@ GRANDFATHERED_ALL_PREBUILT := \
 	media_profiles.xml \
 	power.tuna.so \
 	busybox \
-	tune2fs
+	tune2fs \
+	zoneinfo.dat \
+	zoneinfo.idx \
+	zoneinfo.version
+
+ifeq ($(TARGET_BOOTLOADER_TYPE),uboot)
+GRANDFATHERED_ALL_PREBUILT += \
+	build-uboot \
+	build-mkenvimg
+endif
