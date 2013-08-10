@@ -170,7 +170,7 @@ def add_to_manifest(repositories, fallback_branch = None):
         repo_name = repository['repository']
         repo_target = repository['target_path']
 
-        if repo_name == "android_device_samsung_toro" or repo_name = "android_device_samsung_tuna":
+        if repo_name == "android_device_samsung_toro" or repo_name == "android_device_samsung_tuna":
             if exists_in_tree(lm, repo_name):
                 print('MWisBest/%s already exists' % (repo_name))
                 continue
