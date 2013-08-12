@@ -170,7 +170,7 @@ def add_to_manifest(repositories, fallback_branch = None):
         repo_name = repository['repository']
         repo_target = repository['target_path']
 
-        if repo_name == "android_device_samsung_toro" or repo_name == "android_device_samsung_tuna":
+        if repo_name == "android_device_samsung_toro" or repo_name == "android_device_samsung_tuna" or repo_name.startswith("proprietary_"):
             if exists_in_tree(lm, repo_name):
                 print('MWisBest/%s already exists' % (repo_name))
                 continue
@@ -214,7 +214,7 @@ def fetch_dependencies(repo_path, fallback_branch = None):
         fetch_list = []
 
         for dependency in dependencies:
-            if dependency['repository'] == "android_device_samsung_tuna":
+            if dependency['repository'] == "android_device_samsung_tuna" or dependency['repository'].startswith("proprietary_"):
                 if not is_in_manifest("MWisBest/%s" % dependency['repository']):
                     fetch_list.append(dependency)
                     syncable_repos.append(dependency['target_path'])
