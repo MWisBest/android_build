@@ -214,7 +214,7 @@ def fetch_dependencies(repo_path, fallback_branch = None):
         fetch_list = []
 
         for dependency in dependencies:
-            if dependency['repository'] == "android_device_samsung_tuna" or dependency['repository'].startswith("proprietary_"):
+            if dependency['repository'] == "android_device_samsung_tuna" or dependency['repository'].startswith("proprietary_") or dependency['repository'] == "android_kernel_samsung_tuna":
                 if not is_in_manifest("MWisBest/%s" % dependency['repository']):
                     fetch_list.append(dependency)
                     syncable_repos.append(dependency['target_path'])
