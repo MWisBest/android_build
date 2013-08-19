@@ -68,16 +68,28 @@ endif
 
 TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
-TARGET_arm_CFLAGS :=    -O2 \
+TARGET_arm_CFLAGS :=    -O3 \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -funswitch-loops
 
 # Modules can choose to compile some source as thumb.
 TARGET_thumb_CFLAGS :=  -mthumb \
-                        -Os \
+                        -O3 \
                         -fomit-frame-pointer \
-                        -fno-strict-aliasing
+                        -fstrict-aliasing \
+                        -Wstrict-aliasing=2 \
+                        -Werror=strict-aliasing
+
+
+# Allow disabling strict aliasing to specifically ARM...
+ifeq ($(DEBUG_NO_STRICT_ALIASING_ARM),yes)
+TARGET_arm_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
+endif
+# ...and THUMB
+ifeq ($(DEBUG_NO_STRICT_ALIASING_THUMB),yes)
+TARGET_thumb_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
+endif
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for
@@ -148,12 +160,16 @@ TARGET_GLOBAL_LDFLAGS += \
 TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
 TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
+ifneq ($(DEBUG_NO_STDCXX11),yes)
+TARGET_GLOBAL_CPPFLAGS += $(call cc-option,-std=gnu++11)
+endif
 
 # More flags/options can be added here
 TARGET_RELEASE_CFLAGS := \
 			-DNDEBUG \
 			-g \
 			-Wstrict-aliasing=2 \
+			-Werror=strict-aliasing \
 			-fgcse-after-reload \
 			-frerun-cse-after-loop \
 			-frename-registers
