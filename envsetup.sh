@@ -1480,6 +1480,7 @@ function installboot()
         fi
     fi
     adb start-server
+    adb wait-for-device
     adb root
     sleep 1
     adb wait-for-online shell mount /system 2>&1 > /dev/null
@@ -1529,6 +1530,7 @@ function installrecovery()
         fi
     fi
     adb start-server
+    adb wait-for-device
     adb root
     sleep 1
     adb wait-for-online shell mount /system 2>&1 >> /dev/null
