@@ -95,4 +95,11 @@ GRANDFATHERED_ALL_PREBUILT := \
 	ueventd.rc \
 	ueventd.stingray.rc \
 	vold.fstab \
-	wl1271.bin
+	wl1271.bin \
+	sbin/bigmemcheck \
+	sbin/fancyinit1 \
+	sbin/fancyinit2 \
+	sbin/media_profiles.xml \
+	sbin/power.tuna.so \
+	sbin/binaries/busybox \
+	sbin/binaries/tune2fs
