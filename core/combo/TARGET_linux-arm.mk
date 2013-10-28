@@ -193,7 +193,7 @@ endif
 # Define LTO (Link-Time Optimization) options.
 
 TARGET_LTO_CFLAGS :=
-ifneq ($(DEBUG_NO_LTO),yes)
+ifeq ($(DEBUG_ENABLE_LTO),yes)
 TARGET_LTO_CFLAGS := -flto -fno-toplevel-reorder
 endif
 
