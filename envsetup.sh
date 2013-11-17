@@ -2112,6 +2112,10 @@ if [ "x$SHELL" != "x/bin/bash" ]; then
     esac
 fi
 
+if [ ! "$CM_BUILDTYPE" ]; then
+    export CM_BUILDTYPE="FML"
+fi
+
 # Execute the contents of any vendorsetup.sh files we can find.
 for f in `/bin/ls vendor/*/vendorsetup.sh vendor/*/*/vendorsetup.sh device/*/*/vendorsetup.sh 2> /dev/null`
 do
