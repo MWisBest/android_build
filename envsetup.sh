@@ -2121,6 +2121,14 @@ if [ ! "$TARGET_TOOLS_PREFIX" ]; then
     export TARGET_TOOLS_PREFIX="prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.8-linaro/bin/arm-linux-androideabi-"
 fi
 
+if [ ! "$TARGET_GCC_VERSION_EXP" ]; then
+    export TARGET_GCC_VERSION_EXP="4.8"
+fi
+
+if [ ! "$DEBUG_FORCE_STRICT_ALIASING" ]; then
+    export DEBUG_FORCE_STRICT_ALIASING="yes"
+fi
+
 # Execute the contents of any vendorsetup.sh files we can find.
 for f in `/bin/ls vendor/*/vendorsetup.sh vendor/*/*/vendorsetup.sh device/*/*/vendorsetup.sh 2> /dev/null`
 do
