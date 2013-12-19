@@ -53,7 +53,11 @@ $(combo_target)RELEASE_CFLAGS += -Werror=strict-aliasing
 else
 $(combo_target)RELEASE_CFLAGS += -Wno-error=strict-aliasing
 endif
+ifneq ($(DEBUG_EXP_OPT),yes)
 $(combo_target)GLOBAL_LDFLAGS := -Wl,-O2
+else
+$(combo_target)GLOBAL_LDFLAGS := -Wl,-O3
+endif
 $(combo_target)GLOBAL_ARFLAGS := crsP
 
 $(combo_target)EXECUTABLE_SUFFIX :=
