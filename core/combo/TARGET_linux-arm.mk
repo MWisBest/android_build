@@ -154,7 +154,7 @@ TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
 TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
 ifneq ($(DEBUG_NO_STDCXX11),yes)
-TARGET_GLOBAL_CPPFLAGS += $(call cc-option,-std=gnu++11)
+TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
 endif
 
 # More flags/options can be added here
