@@ -1466,7 +1466,7 @@ if [ ! "$ROM_BUILDTYPE" ]; then
 fi
 
 if [ ! "$TARGET_TOOLS_PREFIX" ]; then
-    export TARGET_TOOLS_PREFIX="prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.8-linaro/bin/arm-linux-androideabi-"
+    export TARGET_TOOLS_PREFIX="prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.8/bin/arm-linux-androideabi-"
 fi
 
 # Execute the contents of any vendorsetup.sh files we can find.
