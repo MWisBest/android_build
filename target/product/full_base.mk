@@ -21,16 +21,12 @@
 
 PRODUCT_PACKAGES := \
     libfwdlockengine \
-    VideoEditor \
     WAPPushManager
 
 PRODUCT_PACKAGES += \
     Galaxy4 \
-    HoloSpiralWallpaper \
     LiveWallpapers \
     LiveWallpapersPicker \
-    MagicSmokeWallpapers \
-    NoiseField \
     PhaseBeam \
     VisualizationWallpapers \
     PhotoTable
