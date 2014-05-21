@@ -35,7 +35,7 @@ TARGET_ARCH_VARIANT := armv5te
 endif
 
 ifeq ($(strip $(TARGET_GCC_VERSION_EXP)),)
-TARGET_GCC_VERSION := 4.7
+TARGET_GCC_VERSION := 4.8
 else
 TARGET_GCC_VERSION := $(TARGET_GCC_VERSION_EXP)
 endif
@@ -166,7 +166,6 @@ endif
 # More flags/options can be added here
 TARGET_RELEASE_CFLAGS += \
 			-DNDEBUG \
-			-g \
 			-Wstrict-aliasing=2 \
 			-Werror=strict-aliasing \
 			-fgcse-after-reload \
@@ -193,7 +192,7 @@ endif
 
 TARGET_LTO_CFLAGS :=
 ifneq ($(DEBUG_NO_LTO),yes)
-TARGET_LTO_CFLAGS := -flto -fno-toplevel-reorder
+TARGET_LTO_CFLAGS := -flto -fno-toplevel-reorder -fuse-linker-plugin
 endif
 
 # Define FDO (Feedback Directed Optimization) options.
