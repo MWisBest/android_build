@@ -50,6 +50,9 @@ $(combo_target)GLOBAL_CFLAGS := -fno-exceptions -Wno-multichar
 $(combo_target)RELEASE_CFLAGS := -O3 -Wstrict-aliasing=2
 ifneq ($(combo_target),HOST_)
 $(combo_target)RELEASE_CFLAGS += -Werror=strict-aliasing
+ifneq ($(strip $(DEBUG_EXPERIMENTAL_FLAGS)),)
+$(combo_target)RELEASE_CFLAGS += $(DEBUG_EXPERIMENTAL_FLAGS)
+endif
 else
 $(combo_target)RELEASE_CFLAGS += -Wno-error=strict-aliasing
 endif
