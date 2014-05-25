@@ -39,7 +39,8 @@ ifeq ($(TARGET_ARCH),arm)
     -fno-builtin-sin \
     -fno-strict-volatile-bitfields \
     -fno-align-jumps \
-    -Wa,--noexecstack
+    -Wa,--noexecstack \
+    -fira-hoist-pressure
 endif
 ifeq ($(TARGET_ARCH),mips)
   RS_TRIPLE := mipsel-unknown-linux
