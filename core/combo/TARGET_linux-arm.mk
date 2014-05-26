@@ -97,6 +97,15 @@ ifeq ($(DEBUG_NO_STRICT_ALIASING_THUMB),yes)
 TARGET_thumb_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
 endif
 
+# Allow testing CFLAGS for ARM...
+ifneq ($(strip $(DEBUG_EXPERIMENTAL_FLAGS_ARM)),)
+TARGET_arm_CFLAGS += $(DEBUG_EXPERIMENTAL_FLAGS_ARM)
+endif
+# ...and THUMB
+ifneq ($(strip $(DEBUG_EXPERIMENTAL_FLAGS_THUMB)),)
+TARGET_arm_CFLAGS += $(DEBUG_EXPERIMENTAL_FLAGS_THUMB)
+endif
+
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for
 # files that are normally built as thumb; this can make
