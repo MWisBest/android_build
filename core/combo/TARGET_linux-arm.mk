@@ -200,8 +200,10 @@ endif
 # Define LTO (Link-Time Optimization) options.
 
 TARGET_LTO_CFLAGS :=
+TARGET_LTO_LDFLAGS :=
 ifneq ($(DEBUG_NO_LTO),yes)
 TARGET_LTO_CFLAGS := -flto -fno-toplevel-reorder -fuse-linker-plugin
+TARGET_LTO_LDFLAGS := -Wl,-flto
 endif
 
 # Define FDO (Feedback Directed Optimization) options.
