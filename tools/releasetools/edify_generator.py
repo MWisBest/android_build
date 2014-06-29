@@ -159,6 +159,9 @@ class EdifyGenerator(object):
       p = fstab[mount_point]
       if mount_by_label:
         self.script.append('run_program("/sbin/mount", "%s");' % (mount_point,))
+      elif p.fs_type == 'f2fs':
+        self.script.append('run_program("/sbin/mount", "-t", "auto", "%s", "%s");' %
+                           (p.device, p.mount_point))
       else:
         self.script.append('mount("%s", "%s", "%s", "%s");' %
                            (p.fs_type, common.PARTITION_TYPES[p.fs_type],
@@ -199,6 +202,9 @@ class EdifyGenerator(object):
         if not p.mount_point in self.mounts:
           self.script.mount(p.mount_point)
         self.script.append('run_program("/sbin/rm", "-rf", "%s");' % (p.mount_point,))
+      elif p.fs_type == 'f2fs':
+        self.script.append('run_program("/sbin/mkfs.f2fs", "%s");' %
+                           (p.device))
       else:
         self.script.append('format("%s", "%s", "%s", "%s", "%s");' %
                            (p.fs_type, common.PARTITION_TYPES[p.fs_type],
