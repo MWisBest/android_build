@@ -1503,9 +1503,15 @@ ifneq ($(TARGET_CUSTOM_RELEASETOOL),)
 	$(TARGET_CUSTOM_RELEASETOOL)
 endif
 
-.PHONY: otapackage
+.PHONY: otapackage bacon
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
-
+bacon: otapackage
+ifeq ($(USE_PREBUILT_CHROMIUM),1)
+ifneq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
+	@echo "Running Chromium prebuilt setup script..."
+	$(hide) . $(TOPDIR)vendor/fml/utils/chromium_prebuilt.sh $(TOP)
+endif
+endif
 endif    # recovery_fstab is defined
 endif    # TARGET_NO_KERNEL != true
 endif    # TARGET_DEVICE != generic*
