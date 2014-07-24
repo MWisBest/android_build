@@ -54,7 +54,7 @@ ifneq ($(strip $(DEBUG_EXPERIMENTAL_FLAGS)),)
 $(combo_target)RELEASE_CFLAGS += $(DEBUG_EXPERIMENTAL_FLAGS)
 endif
 else
-$(combo_target)RELEASE_CFLAGS += -Wno-error=strict-aliasing
+$(combo_target)RELEASE_CFLAGS += -Wno-error=strict-aliasing -Wno-strict-aliasing -fno-strict-aliasing
 endif
 $(combo_target)GLOBAL_LDFLAGS := -Wl,-O2
 $(combo_target)GLOBAL_ARFLAGS := crsP
