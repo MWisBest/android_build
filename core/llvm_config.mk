@@ -108,6 +108,9 @@ $(call clang-flags-subst,-Wno-unused-but-set-parameter,)
 # clang does not support -mcpu=cortex-a15 yet - fall back to armv7-a for now
 $(call clang-flags-subst,-mcpu=cortex-a15,-march=armv7-a)
 
+# clang does not support -mfpu=neon-fp16 (yet?) - fall back to neon for now
+$(call clang-flags-subst,-mfpu=neon-fp16,-mfpu=neon)
+
 ADDRESS_SANITIZER_CONFIG_EXTRA_CFLAGS := -fsanitize=address
 ADDRESS_SANITIZER_CONFIG_EXTRA_LDFLAGS := -Wl,-u,__asan_preinit
 ADDRESS_SANITIZER_CONFIG_EXTRA_SHARED_LIBRARIES := libdl libasan_preload
