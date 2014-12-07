@@ -43,6 +43,12 @@ else
 $(combo_2nd_arch_prefix)TARGET_GCC_VERSION := $(TARGET_GCC_VERSION_EXP)
 endif
 
+ifeq ($(strip $(TARGET_GCC_VERSION_OTHER_EXP)),)
+$(combo_2nd_arch_prefix)TARGET_GCC_VERSION_OTHER := 4.8
+else
+$(combo_2nd_arch_prefix)TARGET_GCC_VERSION_OTHER := $(TARGET_GCC_VERSION_OTHER_EXP)
+endif
+
 TARGET_ARCH_SPECIFIC_MAKEFILE := $(BUILD_COMBOS)/arch/$(TARGET_$(combo_2nd_arch_prefix)ARCH)/$(TARGET_$(combo_2nd_arch_prefix)ARCH_VARIANT).mk
 ifeq ($(strip $(wildcard $(TARGET_ARCH_SPECIFIC_MAKEFILE))),)
 $(error Unknown ARM architecture version: $(TARGET_$(combo_2nd_arch_prefix)ARCH_VARIANT))
@@ -67,16 +73,27 @@ $(combo_2nd_arch_prefix)TARGET_STRIP := $($(combo_2nd_arch_prefix)TARGET_TOOLS_P
 
 $(combo_2nd_arch_prefix)TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
-$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O2 \
+$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O3 \
                         -fomit-frame-pointer \
                         -fstrict-aliasing    \
                         -funswitch-loops
 
 # Modules can choose to compile some source as thumb.
 $(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS :=  -mthumb \
-                        -Os \
+                        -O3 \
                         -fomit-frame-pointer \
-                        -fno-strict-aliasing
+                        -fstrict-aliasing \
+                        -Wstrict-aliasing=2 \
+                        -Werror=strict-aliasing
+
+# Allow disabling strict aliasing to specifically ARM...
+ifeq ($(DEBUG_DISABLE_STRICT_ALIASING_ARM),true)
+$(combo_2nd_arch_prefix)TARGET_arm_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
+endif
+# ...and THUMB
+ifeq ($(DEBUG_DISABLE_STRICT_ALIASING_THUMB),true)
+$(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS += -fno-strict-aliasing -Wno-error=strict-aliasing
+endif
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for
@@ -114,9 +131,10 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += \
 # "-Wall -Werror" due to a commom idiom "ALOGV(mesg)" where ALOGV is turned
 # into no-op in some builds while mesg is defined earlier. So we explicitly
 # disable "-Wunused-but-set-variable" here.
-ifneq ($(filter 4.6 4.6.% 4.7 4.7.% 4.8, $($(combo_2nd_arch_prefix)TARGET_GCC_VERSION)),)
+ifneq ($(filter 4.6 4.6.% 4.7 4.7.% 4.8 4.8.% 4.9 4.9.%, $($(combo_2nd_arch_prefix)TARGET_GCC_VERSION)),)
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -fno-builtin-sin \
-			-fno-strict-volatile-bitfields
+			-fno-strict-volatile-bitfields \
+			-Wno-unused-parameter -Wno-unused-but-set-parameter
 endif
 
 # This is to avoid the dreaded warning compiler message:
@@ -142,11 +160,15 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
 
+ifneq ($(DEBUG_DISABLE_CXX11),true)
+TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
+endif
+
 # More flags/options can be added here
-$(combo_2nd_arch_prefix)TARGET_RELEASE_CFLAGS := \
+$(combo_2nd_arch_prefix)TARGET_RELEASE_CFLAGS += \
 			-DNDEBUG \
-			-g \
 			-Wstrict-aliasing=2 \
+			-Werror=strict-aliasing \
 			-fgcse-after-reload \
 			-frerun-cse-after-loop \
 			-frename-registers
@@ -165,6 +187,14 @@ $(combo_2nd_arch_prefix)TARGET_LIBGCC := $(shell $($(combo_2nd_arch_prefix)TARGE
         $($(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS) -print-libgcc-file-name)
 $(combo_2nd_arch_prefix)TARGET_LIBATOMIC := $(shell $($(combo_2nd_arch_prefix)TARGET_CC) \
         $($(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS) -print-file-name=libatomic.a)
+endif
+
+# Define LTO (Link-Time Optimization) options.
+$(combo_2nd_arch_prefix)TARGET_LTO_CFLAGS :=
+$(combo_2nd_arch_prefix)TARGET_LTO_LDFLAGS :=
+ifneq ($(DEBUG_DISABLE_LTO),true)
+$(combo_2nd_arch_prefix)TARGET_LTO_CFLAGS += -flto -fno-toplevel-reorder -fuse-linker-plugin
+$(combo_2nd_arch_prefix)TARGET_LTO_LDFLAGS += $($(combo_2nd_arch_prefix)TARGET_LTO_CFLAGS) -Wl,-flto
 endif
 
 KERNEL_HEADERS_COMMON := $(libc_root)/kernel/uapi

@@ -25,8 +25,23 @@ endif
 endif
 
 arch_variant_cflags += \
-	-mfloat-abi=softfp \
-	-mfpu=neon
+	-mfloat-abi=softfp
 
+ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)FPU_VARIANT)),)
+arch_variant_cflags += \
+	-mfpu=neon
+else
+arch_variant_cflags += \
+	-mfpu=$(TARGET_$(combo_2nd_arch_prefix)FPU_VARIANT)
+ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)FPU_VARIANT)),neon-fp16)
+	ARCH_ARM_HAVE_NEON_FP16 := true
+endif
+endif
+
+ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a8)
 arch_variant_ldflags := \
 	-Wl,--fix-cortex-a8
+else
+arch_variant_ldflags := \
+	-Wl,--no-fix-cortex-a8
+endif
