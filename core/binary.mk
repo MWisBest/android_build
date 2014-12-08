@@ -188,8 +188,8 @@ my_compiler_dependencies :=
 ## Add LTO flags if LTO is turned on, supported
 ## and we aren't building a host module.
 ####################################################
-ifeq ($(strip $(LOCAL_NO_LTO_SUPPORT)),)
-  ifeq ($(strip $(LOCAL_CLANG)),)
+ifneq ($(strip $(LOCAL_NO_LTO_SUPPORT)),true)
+  ifneq ($(strip $(LOCAL_CLANG)),true)
     ifeq ($(strip $(LOCAL_IS_HOST_MODULE)),)
       my_cflags += $($(LOCAL_2ND_ARCH_VAR_PREFIX)TARGET_LTO_CFLAGS)
       my_ldflags += $($(LOCAL_2ND_ARCH_VAR_PREFIX)TARGET_LTO_LDFLAGS)
