@@ -160,8 +160,11 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += -mthumb-interwork
 
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
 
+# These aren't always ending up in CPPFLAGS for some reason?!
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += $(arch_variant_cflags)
+
 ifneq ($(DEBUG_DISABLE_CXX11),true)
-TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
 endif
 
 # More flags/options can be added here
