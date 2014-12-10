@@ -196,7 +196,9 @@ endif
 $(combo_2nd_arch_prefix)TARGET_LTO_CFLAGS :=
 $(combo_2nd_arch_prefix)TARGET_LTO_LDFLAGS :=
 ifneq ($(DEBUG_DISABLE_LTO),true)
-$(combo_2nd_arch_prefix)TARGET_LTO_CFLAGS += -flto -fno-toplevel-reorder -fuse-linker-plugin
+$(combo_2nd_arch_prefix)TARGET_LTO_CFLAGS += -flto -fno-toplevel-reorder -fuse-linker-plugin -D__LTO__
+## HACK: DISABLE FORTIFY SOURCE WHEN USING LTO?
+#$(combo_2nd_arch_prefix)TARGET_LTO_CFLAGS += -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0
 $(combo_2nd_arch_prefix)TARGET_LTO_LDFLAGS += $($(combo_2nd_arch_prefix)TARGET_LTO_CFLAGS) -Wl,-flto
 endif
 
