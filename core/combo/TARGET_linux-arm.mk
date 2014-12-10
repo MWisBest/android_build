@@ -31,7 +31,7 @@
 # version.
 #
 ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)ARCH_VARIANT)),)
-TARGET_$(combo_2nd_arch_prefix)ARCH_VARIANT := armv5te
+TARGET_$(combo_2nd_arch_prefix)ARCH_VARIANT := armv7-a
 endif
 
 # Decouple NDK library selection with platform compiler version
