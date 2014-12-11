@@ -170,6 +170,7 @@ endif
 # More flags/options can be added here
 $(combo_2nd_arch_prefix)TARGET_RELEASE_CFLAGS += \
 			-DNDEBUG \
+			-g \
 			-Wstrict-aliasing=2 \
 			-Werror=strict-aliasing \
 			-fgcse-after-reload \
