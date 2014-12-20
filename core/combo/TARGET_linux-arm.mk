@@ -80,7 +80,7 @@ $(combo_2nd_arch_prefix)TARGET_arm_CFLAGS :=    -O3 \
 
 # Modules can choose to compile some source as thumb.
 $(combo_2nd_arch_prefix)TARGET_thumb_CFLAGS :=  -mthumb \
-                        -O3 \
+                        -Os \
                         -fomit-frame-pointer \
                         -fstrict-aliasing \
                         -Wstrict-aliasing=2 \
@@ -163,7 +163,7 @@ $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
 # These aren't always ending up in CPPFLAGS for some reason?!
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += $(arch_variant_cflags)
 
-ifneq ($(DEBUG_DISABLE_CXX11),true)
+ifeq ($(DEBUG_FORCE_CXX11),true)
 $(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += -std=gnu++11
 endif
 
