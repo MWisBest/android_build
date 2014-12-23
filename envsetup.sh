@@ -159,10 +159,15 @@ function setpaths()
             # Legacy toolchain configuration used for ARM kernel compilation
             targetgccversionother=$(get_build_var TARGET_GCC_VERSION_OTHER)
             export TARGET_GCC_VERSION_OTHER=$targetgccversionother
-            toolchaindir=arm/arm-eabi-$targetgccversionother/bin
+            if [ "$TARGET_ARM_UNIFIED_TOOLCHAIN" = "true" ]; then
+                # Some arm-linux-androideabi toolchains include the arm-eabi toolchain
+                toolchaindir=arm/arm-linux-androideabi-$targetgccversion/bin
+            else
+                toolchaindir=arm/arm-eabi-$targetgccversionother/bin
+            fi
             if [ -d "$gccprebuiltdir/$toolchaindir" ]; then
-                 export ARM_EABI_TOOLCHAIN="$gccprebuiltdir/$toolchaindir"
-                 ANDROID_KERNEL_TOOLCHAIN_PATH="$ARM_EABI_TOOLCHAIN":
+                export ARM_EABI_TOOLCHAIN="$gccprebuiltdir/$toolchaindir"
+                ANDROID_KERNEL_TOOLCHAIN_PATH="$ARM_EABI_TOOLCHAIN":
             fi
             ;;
         *)
