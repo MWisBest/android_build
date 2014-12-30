@@ -990,7 +990,7 @@ SYSTEMIMAGE_SOURCE_DIR := $(TARGET_OUT)
 # as the source (since they are very similar).  Generate the patch so
 # we can see how big it's going to be, and include that in the system
 # image size check calculation.
-ifneq ($(INSTALLED_RECOVERYIMAGE_TARGET),)
+ifneq (true,true) #($(INSTALLED_RECOVERYIMAGE_TARGET),)
 intermediates := $(call intermediates-dir-for,PACKAGING,recovery_patch)
 RECOVERY_FROM_BOOT_PATCH := $(intermediates)/recovery_from_boot.p
 $(RECOVERY_FROM_BOOT_PATCH): $(INSTALLED_RECOVERYIMAGE_TARGET) \
