@@ -1536,6 +1536,7 @@ if [ $(whoami) == "kyle" -a $(hostname) == "M6" ]; then
     if [ "$MW_FORCE_DEFAULTS" != "true" ]; then
         export TARGET_GCC_VERSION_EXP=4.9
         export TARGET_GCC_VERSION_OTHER_EXP=4.9
+        export USE_PREBUILT_CHROMIUM=1
     fi
 fi
 
