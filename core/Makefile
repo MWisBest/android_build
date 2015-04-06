@@ -673,6 +673,16 @@ ALL_DEFAULT_INSTALLED_MODULES += $(installed_notice_html_gz)
 endif
 endif  # TARGET_BUILD_APPS
 
+
+ifneq ($(TARGET_KERNEL_SOURCE),)
+# If we know where the kernel source is, grab the notice file from there.
+$(kernel_notice_file): \
+	    $(TARGET_KERNEL_SOURCE)/COPYING \
+	    | $(ACP)
+	@echo Copying: $@
+	$(hide) mkdir -p $(dir $@)
+	$(hide) $(ACP) $< $@
+else
 # The kernel isn't really a module, so to get its module file in there, we
 # make the target NOTICE files depend on this particular file too, which will
 # then be in the right directory for the find in combine-notice-files to work.
@@ -682,6 +692,7 @@ $(kernel_notice_file): \
 	@echo -e ${PRT_INS}"Copying:"${CL_RST}" $@"
 	$(hide) mkdir -p $(dir $@)
 	$(hide) $(ACP) $< $@
+endif
 
 
 # -----------------------------------------------------------------
