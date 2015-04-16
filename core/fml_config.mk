@@ -4,6 +4,9 @@ FML_THUMB_OPT_LEVEL ?= -Os
 FML_USE_STRICT_ALIASING ?= true
 FML_STRICT_ALIASING_WARNLEVEL ?= 2
 
+FML_ALIASING_FIXES ?= \
+	bionic
+
 FML_MAIN_STRICT_ALIASING_FLAGS := -Wstrict-aliasing=2
 FML_ARM_STRICT_ALIASING_FLAGS := -fstrict-aliasing
 FML_THUMB_STRICT_ALIASING_FLAGS := -fno-strict-aliasing
@@ -19,8 +22,6 @@ FML_ARM_STRICT_ALIASING_FLAGS := -fstrict-aliasing
 FML_THUMB_STRICT_ALIASING_FLAGS := -fstrict-aliasing
 
 FML_NO_STRICT_ALIASING_MODULES := \
-	libc_bionic \
-	libc_dns \
 	libstlport \
 	libziparchive \
 	libandroid_runtime \
@@ -29,7 +30,6 @@ FML_NO_STRICT_ALIASING_MODULES := \
 	libpdfiumcore \
 	libmedia \
 	dnsmasq \
-	clatd \
 	libstagefright_webm \
 	logwrapper \
 	logd \
@@ -47,8 +47,17 @@ FML_NO_STRICT_ALIASING_MODULES := \
 	libdownmix \
 	libldnhncr \
 	libvisualizer \
-	libstlport_static \
+	libstlport_static
+
+
+ifneq (bionic,$(filter bionic,$(FML_ALIASING_FIXES)))
+FML_NO_STRICT_ALIASING_MODULES += \
+	libc_bionic \
+	libc_dns \
+	clatd \
 	tcpdump
+endif
 
 
 endif
+
