@@ -237,6 +237,8 @@ endif
 
 combo_target := TARGET_
 combo_2nd_arch_prefix :=
+# include FML variables, but only effect TARGET's select.
+include $(BUILD_SYSTEM)/fml_config.mk
 include $(BUILD_SYSTEM)/combo/select.mk
 
 # Load the 2nd target arch if it's needed.

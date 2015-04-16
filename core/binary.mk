@@ -196,6 +196,16 @@ ifeq ($(strip $(LOCAL_FDO_SUPPORT)), true)
   endif
 endif
 
+##################################################################
+## Add... yeah these
+##################################################################
+ifeq ($(strip $(LOCAL_IS_HOST_MODULE)),)
+  ifeq ($(LOCAL_MODULE),$(filter $(LOCAL_MODULE),$(FML_NO_STRICT_ALIASING_MODULES)))
+    my_cflags += -fno-strict-aliasing
+    my_cppflags += -fno-strict-aliasing
+  endif
+endif
+
 ###########################################################
 ## Explicitly declare assembly-only __ASSEMBLY__ macro for
 ## assembly source
