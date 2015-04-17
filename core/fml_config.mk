@@ -7,6 +7,7 @@ FML_STRICT_ALIASING_WARNLEVEL ?= 2
 FML_ALIASING_FIXES ?= \
 	bionic \
 	external_stlport \
+	frameworks_av \
 	frameworks_base
 
 FML_MAIN_STRICT_ALIASING_FLAGS := -Wstrict-aliasing=2
@@ -28,14 +29,10 @@ FML_NO_STRICT_ALIASING_MODULES := \
 	libziparchive \
 	libpdfium \
 	libpdfiumcore \
-	libmedia \
 	dnsmasq \
 	libstagefright_webm \
 	logwrapper \
 	logd \
-	libaudioflinger \
-	libmediaplayerservice \
-	libstagefright \
 	ping \
 	ping6 \
 	libtee_client_api_driver \
@@ -43,10 +40,8 @@ FML_NO_STRICT_ALIASING_MODULES := \
 	libvariablespeed \
 	libjavacore \
 	librtp_jni \
-	libwilhelm \
-	libdownmix \
-	libldnhncr \
-	libvisualizer
+	libwilhelm
+
 
 ifneq (bionic,$(filter bionic,$(FML_ALIASING_FIXES)))
 FML_NO_STRICT_ALIASING_MODULES += \
@@ -65,6 +60,23 @@ FML_NO_STRICT_ALIASING_MODULES += \
 	libstlport \
 	libstlport_static
 endif
+
+
+ifneq (frameworks_av,$(filter frameworks_av,$(FML_ALIASING_FIXES)))
+FML_NO_STRICT_ALIASING_MODULES += \
+	libaudioflinger \
+	libmediaplayerservice \
+	libstagefright
+endif
+
+#TODO:
+#These belong under the fw_av umbrella but aren't fixed up yet.
+#Listed in order of priority.
+FML_NO_STRICT_ALIASING_MODULES += \
+	libmedia \
+	libvisualizer \
+	libdownmix \
+	libldnhncr \
 
 
 ifneq (frameworks_base,$(filter frameworks_base,$(FML_ALIASING_FIXES)))
