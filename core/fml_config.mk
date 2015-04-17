@@ -5,7 +5,9 @@ FML_USE_STRICT_ALIASING ?= true
 FML_STRICT_ALIASING_WARNLEVEL ?= 2
 
 FML_ALIASING_FIXES ?= \
-	bionic
+	bionic \
+	external_stlport \
+	frameworks_base
 
 FML_MAIN_STRICT_ALIASING_FLAGS := -Wstrict-aliasing=2
 FML_ARM_STRICT_ALIASING_FLAGS := -fstrict-aliasing
@@ -21,11 +23,9 @@ FML_MAIN_STRICT_ALIASING_FLAGS := \
 FML_ARM_STRICT_ALIASING_FLAGS := -fstrict-aliasing
 FML_THUMB_STRICT_ALIASING_FLAGS := -fstrict-aliasing
 
+
 FML_NO_STRICT_ALIASING_MODULES := \
-	libstlport \
 	libziparchive \
-	libandroid_runtime \
-	libandroidfw \
 	libpdfium \
 	libpdfiumcore \
 	libmedia \
@@ -46,18 +46,32 @@ FML_NO_STRICT_ALIASING_MODULES := \
 	libwilhelm \
 	libdownmix \
 	libldnhncr \
-	libvisualizer \
-	libstlport_static
-
+	libvisualizer
 
 ifneq (bionic,$(filter bionic,$(FML_ALIASING_FIXES)))
 FML_NO_STRICT_ALIASING_MODULES += \
 	libc_bionic \
-	libc_dns \
+	libc_dns
+
+# libc_dns extends to these as well via includes from it:
+FML_NO_STRICT_ALIASING_MODULES += \
 	clatd \
 	tcpdump
 endif
 
+
+ifneq (external_stlport,$(filter external_stlport,$(FML_ALIASING_FIXES)))
+FML_NO_STRICT_ALIASING_MODULES += \
+	libstlport \
+	libstlport_static
+endif
+
+
+ifneq (frameworks_base,$(filter frameworks_base,$(FML_ALIASING_FIXES)))
+FML_NO_STRICT_ALIASING_MODULES += \
+	libandroid_runtime \
+	libandroidfw
+endif
 
 endif
 
