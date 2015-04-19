@@ -197,12 +197,19 @@ ifeq ($(strip $(LOCAL_FDO_SUPPORT)), true)
 endif
 
 ##################################################################
-## Add... yeah these
+## Add potential FML workarounds.
 ##################################################################
 ifeq ($(strip $(LOCAL_IS_HOST_MODULE)),)
   ifeq ($(LOCAL_MODULE),$(filter $(LOCAL_MODULE),$(FML_NO_STRICT_ALIASING_MODULES)))
     my_cflags += -fno-strict-aliasing
-    my_cppflags += -fno-strict-aliasing
+  endif
+
+  ifeq ($(LOCAL_MODULE),$(filter $(LOCAL_MODULE),$(FML_O2_FALLBACK_MODULES)))
+    my_cflags += -O2
+  endif
+
+  ifeq ($(LOCAL_MODULE),$(filter $(LOCAL_MODULE),$(FML_OS_FALLBACK_MODULES)))
+    my_cflags += -Os
   endif
 endif
 
