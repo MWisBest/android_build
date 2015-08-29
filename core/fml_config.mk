@@ -145,6 +145,13 @@ FML_NO_STRICT_ALIASING_MODULES += \
 	libwilhelm
 endif
 #############################################################################
+###########################################################################
+# hardware/ti/omap4, *would* be great to have fixed.
+ifneq (hardware_ti_omap4,$(filter hardware_ti_omap4,$(FML_ALIASING_FIXES)))
+FML_NO_STRICT_ALIASING_MODULES += \
+	libdomx
+endif
+###########################################################################
 #######################################################
 # libcore, *would* be great to have fixed.
 # but it's a pretty bad violater :/
