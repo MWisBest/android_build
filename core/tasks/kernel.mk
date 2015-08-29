@@ -170,9 +170,13 @@ endif
 endif
 
 ifneq ($(USE_CCACHE),)
-    ccache := $(ANDROID_BUILD_TOP)/prebuilts/misc/$(HOST_PREBUILT_TAG)/ccache/ccache
-    # Check that the executable is here.
-    ccache := $(strip $(wildcard $(ccache)))
+    ifneq ($(CCACHE_BIN_PATH),)
+        ccache := $(CCACHE_BIN_PATH)
+    else
+        ccache := $(ANDROID_BUILD_TOP)/prebuilts/misc/$(HOST_PREBUILT_TAG)/ccache/ccache
+        # Check that the executable is here.
+        ccache := $(strip $(wildcard $(ccache)))
+    endif
 endif
 
 KERNEL_CROSS_COMPILE := CROSS_COMPILE="$(ccache) $(KERNEL_TOOLCHAIN_PATH)"

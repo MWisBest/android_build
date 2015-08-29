@@ -73,7 +73,11 @@ ifneq ($(USE_CCACHE),)
   # implies that __DATE__ and __TIME__ are not critical for functionality.
   # Ignore include file modification time since it will depend on when
   # the repo was checked out
-  export CCACHE_SLOPPINESS := time_macros,include_file_mtime,file_macro
+  ifeq ($(USE_CCACHE_STATMATCH),true)
+    export CCACHE_SLOPPINESS := time_macros,include_file_mtime,include_file_ctime,file_macro,file_stat_matches
+  else
+    export CCACHE_SLOPPINESS := time_macros,include_file_mtime,include_file_ctime,file_macro
+  endif
 
   # Turn all preprocessor absolute paths into relative paths.
   # Fixes absolute paths in preprocessed source due to use of -g.
@@ -88,15 +92,22 @@ ifneq ($(USE_CCACHE),)
   # See http://petereisentraut.blogspot.com/2011/09/ccache-and-clang-part-2.html
   export CCACHE_CPP2 := true
 
-  CCACHE_HOST_TAG := $(HOST_PREBUILT_TAG)
-  # If we are cross-compiling Windows binaries on Linux
-  # then use the linux ccache binary instead.
-  ifeq ($(HOST_OS)-$(BUILD_OS),windows-linux)
-    CCACHE_HOST_TAG := linux-$(HOST_PREBUILT_ARCH)
+  # Allow overriding the ccache binary
+  ifneq ($(CCACHE_BIN_PATH),)
+    ccache := $(CCACHE_BIN_PATH)
+    ccache := $(strip $(wildcard $(ccache)))
+  else
+    CCACHE_HOST_TAG := $(HOST_PREBUILT_TAG)
+    # If we are cross-compiling Windows binaries on Linux
+    # then use the linux ccache binary instead.
+    ifeq ($(HOST_OS)-$(BUILD_OS),windows-linux)
+      CCACHE_HOST_TAG := linux-$(HOST_PREBUILT_ARCH)
+    endif
+    ccache := prebuilts/misc/$(CCACHE_HOST_TAG)/ccache/ccache
+    # Check that the executable is here.
+    ccache := $(strip $(wildcard $(ccache)))
   endif
-  ccache := prebuilts/misc/$(CCACHE_HOST_TAG)/ccache/ccache
-  # Check that the executable is here.
-  ccache := $(strip $(wildcard $(ccache)))
+
   ifdef ccache
     ifndef CC_WRAPPER
       CC_WRAPPER := $(ccache)
