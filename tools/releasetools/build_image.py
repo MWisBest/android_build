@@ -377,7 +377,7 @@ def BuildImage(in_dir, prop_dict, out_file, target_out=None):
     if not MakeVerityEnabledImage(out_file, prop_dict):
       return False
 
-  if run_fsck and prop_dict.get("skip_fsck") != "true":
+  if run_fsck and prop_dict.get("do_fsck") == "true":
     success, unsparse_image = UnsparseImage(out_file, replace=False)
     if not success:
       return False
