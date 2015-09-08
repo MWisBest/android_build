@@ -11,7 +11,7 @@ ARCH_ARM_HAVE_NEON              := true
 arch_variant_cflags := -march=armv7-a
 
 ifneq (,$(filter cortex-a15 krait denver,$(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)))
-	arch_variant_cflags += -mcpu=cortex-a15 -mtune=cortex-a15
+	arch_variant_cflags := -mcpu=cortex-a15 -mtune=cortex-a15
 else
 ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a9)
 	arch_variant_cflags += -mcpu=cortex-a9 -mtune=cortex-a9
