@@ -20,8 +20,20 @@ FML_NO_STRICT_ALIASING_MODULES := waefjioewaf
 FML_O2_FALLBACK_MODULES := waefjioewaf
 FML_OS_FALLBACK_MODULES := waefjioewaf
 
+
+#####################
+# -O2 fallback list #
+#####################
 ifeq ($(FML_ARM_OPT_LEVEL),-O3)
 
+###############################################################################
+# device/moto/shamu, dumb issue in camera junk
+ifneq (device_moto_shamu,$(filter device_moto_shamu,$(FML_OPT_FALLBACK_FIXES)))
+FML_O2_FALLBACK_MODULES += \
+	mm-qcamera-app \
+	camera.msm8084
+endif
+###############################################################################
 #######################################################################
 # frameworks/av, important.
 ifneq (frameworks_av,$(filter frameworks_av,$(FML_OPT_FALLBACK_FIXES)))
@@ -33,7 +45,9 @@ endif
 
 endif
 
-
+#####################
+# -Os fallback list #
+#####################
 ifeq ($(FML_THUMB_OPT_LEVEL),-O3)
 
 #######################################################################
@@ -74,6 +88,13 @@ FML_NO_STRICT_ALIASING_MODULES += \
 	tcpdump
 endif
 #####################################################
+###########################################################################
+# device/moto/shamu, dumb issue in camera junk...
+ifneq (device_moto_shamu,$(filter device_moto_shamu,$(FML_ALIASING_FIXES)))
+FML_NO_STRICT_ALIASING_MODULES += \
+	camera.msm8084
+endif
+###########################################################################
 #########################################################################
 # external/dnsmasq, not really important.
 ifneq (external_dnsmasq,$(filter external_dnsmasq,$(FML_ALIASING_FIXES)))
@@ -145,6 +166,13 @@ FML_NO_STRICT_ALIASING_MODULES += \
 	libwilhelm
 endif
 #############################################################################
+###############################################################################
+# hardware/qcom/audio, who cares it's qcom.
+ifneq (hardware_qcom_audio,$(filter hardware_qcom_audio,$(FML_ALIASING_FIXES)))
+FML_NO_STRICT_ALIASING_MODULES += \
+	libqcomvisualizer
+endif
+###############################################################################
 ###########################################################################
 # hardware/ti/omap4, *would* be great to have fixed.
 ifneq (hardware_ti_omap4,$(filter hardware_ti_omap4,$(FML_ALIASING_FIXES)))
