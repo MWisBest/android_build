@@ -1745,8 +1745,8 @@ if [ $(whoami) == "kyle" -a $(hostname) == "M6" ]; then
     # ...unless we don't want to!
     if [ "$MW_FORCE_DEFAULTS" != "true" ]; then
         # Use GCC 4.9 by default.
-        #export TARGET_GCC_VERSION_EXP=4.9
-        #export TARGET_GCC_VERSION_OTHER_EXP=4.9
+        export TARGET_GCC_VERSION_EXP=4.9
+        export TARGET_GCC_VERSION_OTHER_EXP=4.9
         # Use my own ccache binary, which is actually up-to-date
         export CCACHE_BIN_PATH="/usr/bin/ccache"
         #export USE_CCACHE_STATMATCH=true
