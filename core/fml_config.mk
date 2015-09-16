@@ -188,6 +188,13 @@ FML_NO_STRICT_ALIASING_MODULES += \
 	libjavacore
 endif
 #######################################################
+#########################################################################################
+# packages/apps/DSPManager, meh. fuck Cyanogen Inc.
+ifneq (packages_apps_DSPManager,$(filter packages_apps_DSPManager,$(FML_ALIASING_FIXES)))
+FML_NO_STRICT_ALIASING_MODULES += \
+	libcyanogen-dsp
+endif
+#########################################################################################
 ###############################################################
 # system_core, *would* be great to have fixed.
 ifneq (system_core,$(filter system_core,$(FML_ALIASING_FIXES)))
@@ -201,6 +208,4 @@ endif
 
 
 
-
 endif
-
