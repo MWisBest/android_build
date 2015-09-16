@@ -36,48 +36,77 @@ except ImportError:
 
 # Config
 # set this to the default remote to use in repo
-default_rem = "omnirom"
+default_rem = "mw"
 # set this to the default revision to use (branch/tag name)
-default_rev = "android-5.1"
+default_rev = "omni-5.1"
 # set this to the remote that you use for projects from your team repos
 # example fetch="https://github.com/omnirom"
-default_team_rem = "omnirom"
+default_team_rem = "mw"
 # this shouldn't change unless google makes changes
 local_manifest_dir = ".repo/local_manifests"
 # change this to your name on github (or equivalent hosting)
-android_team = "omnirom"
-# url to gerrit repository
-gerrit_url = "gerrit.omnirom.org"
+android_team = "MWisBest"
 
 
-def check_repo_exists(git_data, device):
-    re_match = "^android_device_.*_{device}$".format(device=device)
-    matches = filter(lambda x: re.match(re_match, x), git_data)
-    if len(matches) != 1:
-        raise Exception("{device} not found,"
-                        "exiting roomservice".format(device=device))
+#def check_repo_exists(git_data, device):
+#    re_match = "^android_device_.*_{device}$".format(device=device)
+#    matches = filter(lambda x: re.match(re_match, x), git_data)
+#    if len(matches) != 1:
+#        raise Exception("{device} not found,"
+#                        "exiting roomservice".format(device=device))
+#
+#    return git_data[matches[0]]
 
-    return git_data[matches[0]]
+def check_repo_exists(git_data):
+    if not int(git_data.get('total_count', 0)):
+        raise Exception("{} not found in {} GitHub, exiiting "
+                        "roomservice".format(device, android_team))
 
 
-def search_gerrit_for_device(device):
-    # TODO: In next gerrit release regex search with r= should be supported!
-    git_search_url = "https://{gerrit_url}/projects/?m={device}".format(
-        gerrit_url=gerrit_url,
-        device=device
-    )
+def search_github_for_device(device):
+    git_search_url = "https://api.github.com/search/repositories" \
+                     "?q=%40{}+android_device+{}+fork:true".format(android_team, device)
     git_req = urllib.request.Request(git_search_url)
+    # this api is a preview at the moment. accept the custom media type
+    git_req.add_header('Accept', 'application/vnd.github.preview')
     try:
         response = urllib.request.urlopen(git_req)
     except urllib.request.HTTPError:
-        raise Exception("There was an issue connecting to gerrit."
-                        " Please try again in a minute")
-    # Skip silly gerrit "header"
-    response.readline()
+        raise Exception("There was an issue connecting to GitHub."
+                        " Please try again in a minute.")
     git_data = json.load(response)
-    device_data = check_repo_exists(git_data, device)
+    #device_data = check_repo_exists(git_data, device)
+    check_repo_exists(git_data)
     print("found the {} device repo".format(device))
-    return device_data
+    return git_data
+
+
+def get_device_url(git_data):
+    device_url = ""
+    for item in git_data['items']:
+        temp_url = item.get('html_url')
+        if "{}/android_device".format(android_team) in temp_url:
+            try:
+                temp_url = temp_url[temp_url.index("android_device"):]
+            except ValueError:
+                pass
+            else:
+                if temp_url.endswith(device):
+                   device_url = temp_url
+                   break
+    if device_url:
+        return device_url
+    raise Exception("{} not found in {} GitHub, exiting "
+                    "roomservice".format(device, android_team))
+
+
+#def parse_device_directory(device_url, device):
+#    to_strip = "android_device"
+#    repo_name = device_url[device_url.index(to_strip) + len(to_strip):]
+#    repo_name = repo_name[:repo_name.index(device)]
+#    repo_dir = repo_name.replace("_", "/")
+#    repo_dir = repo_dir + device
+#    return "device{}".format(repo_dir)
 
 
 def parse_device_directory(device_url, device):
@@ -204,7 +233,7 @@ def parse_device_from_folder(device):
 
 
 def parse_dependency_file(location):
-    dep_file = "omni.dependencies"
+    dep_file = "fml.dependencies"
     dep_location = '/'.join([location, dep_file])
     if not os.path.isfile(dep_location):
         print("WARNING: %s file not found" % dep_location)
@@ -262,8 +291,8 @@ def fetch_device(device):
     if check_device_exists(device):
         print("WARNING: Trying to fetch a device that's already there")
         return
-    git_data = search_gerrit_for_device(device)
-    device_url = git_data['id']
+    git_data = search_github_for_device(device)
+    device_url = get_device_url(git_data)
     device_dir = parse_device_directory(device_url, device)
     project = create_manifest_project(device_url,
                                       device_dir,
