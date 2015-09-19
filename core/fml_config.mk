@@ -50,8 +50,17 @@ endif
 #####################
 ifeq ($(FML_THUMB_OPT_LEVEL),-O3)
 
+#####################################################################################################
+# external/bluetooth/bluedroid
+# O3 has been demonstrated to be unreliable here on numerous occasions
+# can't really pinpoint an exact problem, but considering bluedroid's origins it isn't surprising.
+ifneq (external_bluetooth_bluedroid,$(filter external_bluetooth_bluedroid,$(FML_OPT_FALLBACK_FIXES)))
+FML_OS_FALLBACK_MODULES += \
+	bluetooth.default
+endif
+#####################################################################################################
 #######################################################################
-# frameworks/av, important.
+# frameworks/av, important and fixable.
 ifneq (frameworks_av,$(filter frameworks_av,$(FML_OPT_FALLBACK_FIXES)))
 FML_OS_FALLBACK_MODULES += \
 	libstagefright_m4vh263dec
