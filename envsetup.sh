@@ -129,7 +129,9 @@ function setpaths()
     # defined in core/config.mk
     targetgccversion=$(get_build_var TARGET_GCC_VERSION)
     targetgccversion2=$(get_build_var 2ND_TARGET_GCC_VERSION)
+    targetgccversionother=$(get_build_var TARGET_GCC_VERSION_OTHER)
     export TARGET_GCC_VERSION=$targetgccversion
+    export TARGET_GCC_VERSION_OTHER=$targetgccversionother
 
     # The gcc toolchain does not exists for windows/cygwin. In this case, do not reference it.
     export ANDROID_TOOLCHAIN=
@@ -164,7 +166,7 @@ function setpaths()
     case $ARCH in
         arm)
             # Legacy toolchain configuration used for ARM kernel compilation
-            toolchaindir=arm/arm-eabi-$targetgccversion/bin
+            toolchaindir=arm/arm-eabi-$targetgccversionother/bin
             if [ -d "$gccprebuiltdir/$toolchaindir" ]; then
                  export ARM_EABI_TOOLCHAIN="$gccprebuiltdir/$toolchaindir"
                  ANDROID_KERNEL_TOOLCHAIN_PATH="$ARM_EABI_TOOLCHAIN":

@@ -37,6 +37,8 @@ endif
 # Decouple NDK library selection with platform compiler version
 $(combo_2nd_arch_prefix)TARGET_NDK_GCC_VERSION := 4.9
 
+$(combo_2nd_arch_prefix)TARGET_GCC_VERSION_OTHER := 4.8
+
 ifeq ($(strip $(TARGET_GCC_VERSION_EXP)),)
 $(combo_2nd_arch_prefix)TARGET_GCC_VERSION := 4.9
 else
