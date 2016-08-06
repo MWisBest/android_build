@@ -1499,6 +1499,17 @@ if [ "x$SHELL" != "x/bin/bash" ]; then
     esac
 fi
 
+
+# If we're MWisBest, set up our usual default exports (except for ccache)...
+if [ $(whoami) == "kyle" -a $(hostname) == "M6" ]; then
+    # ...unless we don't want to!
+    if [ "$MW_FORCE_DEFAULTS" != "true" ]; then
+        export MW_FORCE_DEFAULTS=false
+        export TARGET_DUMMY_RECOVERY_PATCH=true
+    fi
+fi
+
+
 # Execute the contents of any vendorsetup.sh files we can find.
 for f in `test -d device && find -L device -maxdepth 4 -name 'vendorsetup.sh' 2> /dev/null | sort` \
          `test -d vendor && find -L vendor -maxdepth 4 -name 'vendorsetup.sh' 2> /dev/null | sort`
