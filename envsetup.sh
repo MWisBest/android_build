@@ -1506,6 +1506,9 @@ if [ $(whoami) == "kyle" -a $(hostname) == "M6" ]; then
     if [ "$MW_FORCE_DEFAULTS" != "true" ]; then
         export MW_FORCE_DEFAULTS=false
         export TARGET_DUMMY_RECOVERY_PATCH=true
+        export ART_BUILD_TARGET_DEBUG=false
+        export ART_BUILD_HOST_DEBUG=false
+        export USE_DEX2OAT_DEBUG=false
     fi
 fi
 
