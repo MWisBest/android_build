@@ -1509,6 +1509,7 @@ if [ $(whoami) == "kyle" -a $(hostname) == "M6" ]; then
         export ART_BUILD_TARGET_DEBUG=false
         export ART_BUILD_HOST_DEBUG=false
         export USE_DEX2OAT_DEBUG=false
+        export USE_XPOSED_FRAMEWORK=true
     fi
 fi
 
