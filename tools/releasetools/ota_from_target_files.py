@@ -114,9 +114,6 @@ Usage:  ota_from_target_files [flags] input_target_files output_ota_package
       builds for an incremental package. This option is only meaningful when
       -i is specified.
 
-  --override_device <device>
-      Override device-specific asserts. Can be a comma-separated list.
-
   --payload_signer <signer>
       Specify the signer when signing the payload and metadata for A/B OTAs.
       By default (i.e. without this flag), it calls 'openssl pkeyutl' to sign
@@ -2017,8 +2014,6 @@ def main(argv):
       OPTIONS.gen_verify = True
     elif o == "--log_diff":
       OPTIONS.log_diff = a
-    elif o == "--override_device":
-      OPTIONS.override_device = a
     elif o == "--payload_signer":
       OPTIONS.payload_signer = a
     elif o == "--payload_signer_args":
@@ -2052,7 +2047,6 @@ def main(argv):
                                  "stash_threshold=",
                                  "gen_verify",
                                  "log_diff=",
-                                 "override_device=",
                                  "payload_signer=",
                                  "payload_signer_args=",
                              ], extra_option_handler=option_handler)
@@ -2078,6 +2072,9 @@ def main(argv):
   input_zip = zipfile.ZipFile(args[0], "r")
   OPTIONS.info_dict = common.LoadInfoDict(input_zip)
   common.ZipClose(input_zip)
+
+  if "ota_override_device" in OPTIONS.info_dict:
+    OPTIONS.override_device = OPTIONS.info_dict.get("ota_override_device")
 
   ab_update = OPTIONS.info_dict.get("ab_update") == "true"
 
