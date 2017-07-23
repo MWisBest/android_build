@@ -28,9 +28,9 @@ SYSTEM_OTHER_ODEX_FILTER ?= app/% priv-app/%
 ifeq ($(HOST_OS),linux)
   WITH_DEXPREOPT_PIC ?= true
   WITH_DEXPREOPT ?= true
-# For an eng build only pre-opt the boot image. This gives reasonable performance and still
+# For a debug build only pre-opt the boot image. This gives reasonable performance and still
 # allows a simple workflow: building in frameworks/base and syncing.
-  ifeq (eng,$(TARGET_BUILD_VARIANT))
+  ifeq ($(filter-out eng userdebug,$(TARGET_BUILD_VARIANT)),)
     WITH_DEXPREOPT_BOOT_IMG_ONLY ?= true
   endif
 # Add mini-debug-info to the boot classpath unless explicitly asked not to.
